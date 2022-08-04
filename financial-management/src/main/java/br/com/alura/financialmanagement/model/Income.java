@@ -35,6 +35,18 @@ public class Income {
 		this.date = date;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setValue(BigDecimal value) {
+		this.value = value;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
 	public Long getId() {
 		return id;
 	}

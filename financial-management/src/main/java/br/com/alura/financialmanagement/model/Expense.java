@@ -9,21 +9,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Expenses {
+public class Expense {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String description;
 	private BigDecimal value;
 	private LocalDate date;
 
-	public Expenses(Long id, String description, BigDecimal value, LocalDate date) {
+	public Expense(Long id, String description, BigDecimal value, LocalDate date) {
 		this.id = id;
 		this.description = description;
 		this.value = value;
 		this.date = date;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setValue(BigDecimal value) {
+		this.value = value;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
+	public Expense() {
 	}
 
 	public Long getId() {
