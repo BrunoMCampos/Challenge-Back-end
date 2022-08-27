@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.alura.financialmanagement.controller.dto.ExpenseDto;
+import br.com.alura.financialmanagement.model.Category;
 import br.com.alura.financialmanagement.model.Expense;
 import br.com.alura.financialmanagement.repository.ExpenseRepository;
 
@@ -18,44 +19,66 @@ public class ExpenseFormUpdate {
 	private String description;
 	private BigDecimal value;
 	private LocalDate date;
+	private Category category;
 
-	public ExpenseFormUpdate(String description, BigDecimal value, LocalDate date) {
+	public ExpenseFormUpdate(String description, BigDecimal value, LocalDate date, Category category) {
 		this.description = description;
 		this.value = value;
 		this.date = date;
+		this.category = category;
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public BigDecimal getValue() {
-		return value;
+		return this.value;
 	}
 
 	public LocalDate getDate() {
-		return date;
+		return this.date;
+	}
+
+	public Category getCategory() {
+		return this.category;
 	}
 
 	public ResponseEntity<ExpenseDto> update(ExpenseRepository expenseRepository, Long id) {
+
+		// Para atualizarmos o banco de dados começamos encontrando o registro pelo ID
+
 		Optional<Expense> optionalExpense = expenseRepository.findById(id);
+
+		// Verificamos a sua existência e, caso o ID informado não exista retornamos 404
 
 		if (!optionalExpense.isPresent()) {
 			return ResponseEntity.notFound().build();
 		} else {
+
+			// Caso o ID exista entramos no else
+
+			// Transformamos o Optional<Expense> em um Expense pelo método get
+
 			Expense expense = optionalExpense.get();
 
-			this.validade(expenseRepository, id, expense);
+			// Realizamos a validação para verificar a integridade dos dados e regras de
+			// negócio
+
+			this.validate(expenseRepository, id, expense);
+
+			// Transformamos o form em um expense
 
 			expense.setDate(this.date);
 			expense.setDescription(this.description);
 			expense.setValue(this.value);
+			expense.setCategory(this.category);
 
 			return ResponseEntity.ok(new ExpenseDto(expense));
 		}
 	}
 
-	private void validade(ExpenseRepository expenseRepository, Long id, Expense expense) {
+	private void validate(ExpenseRepository expenseRepository, Long id, Expense expense) {
 
 		if (this.date == null) {
 			this.date = expense.getDate();
@@ -74,6 +97,10 @@ public class ExpenseFormUpdate {
 
 		if (this.value == null) {
 			this.value = expense.getValue();
+		}
+
+		if (this.category == null) {
+			this.category = expense.getCategory();
 		}
 
 	}

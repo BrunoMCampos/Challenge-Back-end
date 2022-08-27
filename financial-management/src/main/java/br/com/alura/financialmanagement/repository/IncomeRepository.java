@@ -17,4 +17,10 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
 	List<Income> findByDescriptionOnMonthDiferentId(@Param("description") String description, @Param("month") int month,
 			@Param("id") Long id);
 
+	@Query("SELECT i FROM Income i WHERE i.description LIKE :description")
+	List<Income> findByDescriptionWithLike(@Param("description") String description);
+
+	@Query("SELECT i FROM Income i WHERE YEAR(i.date) = :year AND MONTH(i.date) = :month")
+	List<Income> findByDate(@Param("year") int year, @Param("month") int month);
+
 }

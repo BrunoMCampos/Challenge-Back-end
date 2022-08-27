@@ -3,6 +3,7 @@ package br.com.alura.financialmanagement.controller.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import br.com.alura.financialmanagement.model.Income;
@@ -42,6 +43,24 @@ public class IncomeDto {
 
 	public static List<IncomeDto> parse(List<Income> list) {
 		return list.stream().map(IncomeDto::new).collect(Collectors.toList());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(date, description, value);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IncomeDto other = (IncomeDto) obj;
+		return date.equals(other.date) && description.equals(other.description)
+				&& value.compareTo(other.value) == 0;
 	}
 
 }

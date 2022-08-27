@@ -12,9 +12,15 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
 	@Query("SELECT e FROM Expense e WHERE e.description = :description AND MONTH(e.date) = :month")
 	List<Expense> findByDescriptionOnMonth(@Param("description") String description, @Param("month") int month);
-	
+
 	@Query("SELECT e FROM Expense e WHERE e.description = :description AND MONTH(e.date) = :month AND e.id <> :id")
 	List<Expense> findByDescriptionOnMonthDiferentId(@Param("description") String description,
 			@Param("month") int month, @Param("id") Long id);
+
+	@Query("SELECT e FROM Expense e WHERE e.description LIKE :description")
+	List<Expense> findByDescriptionWithLike(@Param("description") String description);
+
+	@Query("SELECT e FROM Expense e WHERE YEAR(e.date) = :year AND MONTH(e.date) = :month")
+	List<Expense> findByDate(@Param("year") int year,@Param("month") int month);
 
 }

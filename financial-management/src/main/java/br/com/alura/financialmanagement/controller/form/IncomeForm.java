@@ -103,4 +103,8 @@ public class IncomeForm {
 		return income;
 	}
 
+	public IncomeDto parseToDto() {
+		return new IncomeDto(this.parse());
+	}
+
 }
